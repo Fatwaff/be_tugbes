@@ -8,40 +8,89 @@ import (
 	"github.com/Fatwaff/be_tugbes/module"
 )
 
-// func TestInserOneDoc(t *testing.T) {
-// 	var data model.User
-// 	data.FirstName = "Fatwa Fatahillah"
-// 	data.LastName = "Fatah"
-// 	data.Email = "fatwa@gmail.com"
-// 	data.Password = "jklbnm"
-// 	hasil := module.InsertOneDoc(module.MongoConnect(), "user", data)
-// 	fmt.Println(hasil)
-// }
-
-// Batas suci
+var db = module.MongoConnect()
 
 func TestGetUserFromEmail(t *testing.T) {
-	email := "dimas@gmail.com"
-	data := module.GetUserFromEmail(email, module.MongoConnect(), "user")
-	fmt.Println(data)
+	email := "abc@gmail.com"
+	hasil := module.GetUserFromEmail(email, db, "user")
+	fmt.Println(hasil)
 }
 
-func TestGetAllDataUser(t *testing.T) {
-	var user []model.User
-	data := module.GetAllData(module.MongoConnect(), "user", user)
-	fmt.Println(data)
+func TestGetAllDoc(t *testing.T) {
+	var docs []model.Tess
+	hasil := module.GetAllDocs(db, "usgf", docs)
+	fmt.Println(hasil)
 }
 
- func TestInserUser(t *testing.T) {
- 	var data model.User
-	data.FirstName = "Naufal Dekha"
-	data.LastName = "Widana"
-	data.Email = "nopal@gmail.com"
-	data.Password = "jklbnm"
- 	hasil, err := module.InsertOneDoc(module.MongoConnect(), "user", data)
- 	if err != nil {
- 		t.Errorf("Error inserting data: %v", err)
- 	}
- 	fmt.Println("Data berhasil disimpan dengan id :", hasil.Hex())
+func TestInsertOneDoc(t *testing.T) {
+ 	var doc model.User
+	doc.FirstName = "Naufal Dekha"
+	doc.LastName = "Widana"
+	doc.Email = "nopal@gmail.com"
+	doc.Password = "jklbnm"
+	if doc.FirstName == "" || doc.LastName == "" || doc.Email == "" || doc.Password == "" {
+		t.Errorf("mohon untuk melengkapi data")
+	} else {
+		insertedID, err := module.InsertOneDoc(db, "user", doc)
+		if err != nil {
+			t.Errorf("Error inserting document: %v", err)
+			fmt.Println("Data tidak berhasil disimpan")
+		} else {
+		fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
+		}
+	}
 }
 
+func TestSignUp(t *testing.T) {
+	var doc model.User
+	doc.FirstName = "Farel Nouval"
+	doc.LastName = "Widana"
+	doc.Email = "farel@gmail.com"
+	doc.Password = "fghjkl"
+	if doc.FirstName == "" || doc.LastName == "" || doc.Email == "" || doc.Password == "" {
+		t.Errorf("mohon untuk melengkapi data")
+	} else if module.EmailExists(db, "user", doc.Email){
+		t.Errorf("Email sudah terdaftar")
+	} else {
+		insertedID, err := module.InsertOneDoc(db, "user", doc)
+		if err != nil {
+			t.Errorf("Error inserting document: %v", err)
+			fmt.Println("Data tidak berhasil disimpan")
+		} else {
+		fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
+		}
+	}
+}
+
+func TestSignUp2(t *testing.T) {
+	var doc model.User
+	doc.FirstName = "Farel Nouval"
+	doc.LastName = "Widana"
+	doc.Email = "abc@gmail.com"
+	doc.Password = "fghjkl"
+	insertedID, err := module.SignUp(db, "user", doc)
+	if err != nil {
+		t.Errorf("Error inserting document: %v", err)
+	} else {
+	fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
+	}
+}
+
+// func TestSignUp(t *testing.T) {
+// 	firstName := "Farel Naufal"
+// 	lastName := "Daswara"
+// 	email := "farel@gmail.com"
+// 	password := "iopjkl"
+//  	insertedID, err := module.SignUp(module.MongoConnect(), "user", firstName, lastName, email, password)
+// 	var er = fmt.Errorf("mongo: no documents in result")
+//  	if err == er && err != nil {
+// 		fmt.Println(err)
+// 		fmt.Println(er)
+//  		t.Errorf("Error inserting document: %v", err)
+//  	} 
+// 	if insertedID.Hex() == "000000000000000000000000" && err == nil{
+// 		fmt.Println("Email sudah terdaftar")
+// 	} else {
+//  	fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
+// 	}
+// }
