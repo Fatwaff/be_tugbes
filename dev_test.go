@@ -11,14 +11,18 @@ import (
 var db = module.MongoConnect()
 
 func TestGetUserFromEmail(t *testing.T) {
-	email := "abc@gmail.com"
-	hasil := module.GetUserFromEmail(email, db, "user")
-	fmt.Println(hasil)
+	email := "farell@gmail.com"
+	hasil, err := module.GetUserFromEmail(email, db, "user")
+	if err != nil {
+		t.Errorf("Error TestGetUserFromEmail: %v", err)
+	} else {
+		fmt.Println(hasil)
+	}
 }
 
 func TestGetAllDoc(t *testing.T) {
-	var docs []model.Tess
-	hasil := module.GetAllDocs(db, "usgf", docs)
+	var docs []model.User
+	hasil := module.GetAllDocs(db, "user", docs)
 	fmt.Println(hasil)
 }
 
@@ -41,38 +45,51 @@ func TestInsertOneDoc(t *testing.T) {
 	}
 }
 
+// func TestSignUp(t *testing.T) {
+// 	var doc model.User
+// 	doc.FirstName = "Farel Nouval"
+// 	doc.LastName = "Widana"
+// 	doc.Email = "farel@gmail.com"
+// 	doc.Password = "fghjkl"
+// 	if doc.FirstName == "" || doc.LastName == "" || doc.Email == "" || doc.Password == "" {
+// 		t.Errorf("mohon untuk melengkapi data")
+// 	} else if module.EmailExists(db, "user", doc.Email){
+// 		t.Errorf("Email sudah terdaftar")
+// 	} else {
+// 		insertedID, err := module.InsertOneDoc(db, "user", doc)
+// 		if err != nil {
+// 			t.Errorf("Error inserting document: %v", err)
+// 			fmt.Println("Data tidak berhasil disimpan")
+// 		} else {
+// 		fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
+// 		}
+// 	}
+// }
+
 func TestSignUp(t *testing.T) {
 	var doc model.User
 	doc.FirstName = "Farel Nouval"
 	doc.LastName = "Widana"
-	doc.Email = "farel@gmail.com"
+	doc.Email = "as@gmail.com"
 	doc.Password = "fghjkl"
-	if doc.FirstName == "" || doc.LastName == "" || doc.Email == "" || doc.Password == "" {
-		t.Errorf("mohon untuk melengkapi data")
-	} else if module.EmailExists(db, "user", doc.Email){
-		t.Errorf("Email sudah terdaftar")
-	} else {
-		insertedID, err := module.InsertOneDoc(db, "user", doc)
-		if err != nil {
-			t.Errorf("Error inserting document: %v", err)
-			fmt.Println("Data tidak berhasil disimpan")
-		} else {
-		fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
-		}
-	}
-}
-
-func TestSignUp2(t *testing.T) {
-	var doc model.User
-	doc.FirstName = "Farel Nouval"
-	doc.LastName = "Widana"
-	doc.Email = "abc@gmail.com"
-	doc.Password = "fghjkl"
+	doc.Confirmpassword = "fghjkl"
 	insertedID, err := module.SignUp(db, "user", doc)
 	if err != nil {
 		t.Errorf("Error inserting document: %v", err)
 	} else {
 	fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
+	}
+}
+
+func TestLogIn(t *testing.T) {
+	var doc model.User
+	doc.Email = "abcd@gmail.com"
+	doc.Password = "fghjkl"
+	user, err := module.LogIn(db, "user", doc)
+	if err != nil {
+		t.Errorf("Error getting document: %v", err)
+	} else {
+		fmt.Println("Welcome :", user)
 	}
 }
 
