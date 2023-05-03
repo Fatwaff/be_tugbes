@@ -11,7 +11,7 @@ import (
 var db = module.MongoConnect()
 
 func TestGetUserFromEmail(t *testing.T) {
-	email := "farell@gmail.com"
+	email := "fatwaff@gmail.com"
 	hasil, err := module.GetUserFromEmail(email, db, "user")
 	if err != nil {
 		t.Errorf("Error TestGetUserFromEmail: %v", err)
@@ -28,9 +28,9 @@ func TestGetAllDoc(t *testing.T) {
 
 func TestInsertOneDoc(t *testing.T) {
  	var doc model.User
-	doc.FirstName = "Naufal Dekha"
-	doc.LastName = "Widana"
-	doc.Email = "nopal@gmail.com"
+	doc.FirstName = "Fatwa Fatahillah"
+	doc.LastName = "Fatah"
+	doc.Email = "fatwahh@gmail.com"
 	doc.Password = "jklbnm"
 	if doc.FirstName == "" || doc.LastName == "" || doc.Email == "" || doc.Password == "" {
 		t.Errorf("mohon untuk melengkapi data")
@@ -68,11 +68,11 @@ func TestInsertOneDoc(t *testing.T) {
 
 func TestSignUp(t *testing.T) {
 	var doc model.User
-	doc.FirstName = "Farel Nouval"
-	doc.LastName = "Widana"
-	doc.Email = "as@gmail.com"
-	doc.Password = "fghjkl"
-	doc.Confirmpassword = "fghjkl"
+	doc.FirstName = "Fatwa Fatahillah"
+	doc.LastName = "Fatah"
+	doc.Email = "fatwaff@gmail.com"
+	doc.Password = "fghjklio"
+	doc.Confirmpassword = "fghjklio"
 	insertedID, err := module.SignUp(db, "user", doc)
 	if err != nil {
 		t.Errorf("Error inserting document: %v", err)
@@ -83,8 +83,8 @@ func TestSignUp(t *testing.T) {
 
 func TestLogIn(t *testing.T) {
 	var doc model.User
-	doc.Email = "abcd@gmail.com"
-	doc.Password = "fghjkl"
+	doc.Email = "fatwaff@gmail.com"
+	doc.Password = "fghjklio"
 	user, err := module.LogIn(db, "user", doc)
 	if err != nil {
 		t.Errorf("Error getting document: %v", err)
