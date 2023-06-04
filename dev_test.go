@@ -26,6 +26,12 @@ func TestGetAllDoc(t *testing.T) {
 	fmt.Println(hasil)
 }
 
+func TestGetAllKamtibmas(t *testing.T) {
+	var docs []model.Kamtibmas
+	hasil := module.GetAllDocs(db, "kamtibmas", docs)
+	fmt.Println(hasil)
+}
+
 func TestInsertOneDoc(t *testing.T) {
  	var doc model.User
 	doc.FirstName = "Fatwa Fatahillah"

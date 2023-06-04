@@ -14,3 +14,11 @@ type User struct {
 	Salt 			string			   `bson:"salt,omitempty" json:"salt,omitempty"`
 }
 
+type Kamtibmas struct {
+	ID           	primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Kecamatan  		string             `bson:"kecamatan,omitempty" json:"kecamatan,omitempty"`
+	Kelurahan  		string             `bson:"kelurahan,omitempty" json:"kelurahan,omitempty"`
+	Pelanggaran  	string             `bson:"jenis_pelanggaran_kamtibmas,omitempty" json:"jenis_pelanggaran_kamtibmas,omitempty"`
+	Lokasi	        string         	   `bson:"lokasi_rawan_kamtibmas,omitempty" json:"lokasi_rawan_kamtibmas,omitempty"`
+}
+
