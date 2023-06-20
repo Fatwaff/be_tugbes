@@ -6,6 +6,7 @@ import (
 
 	"github.com/Fatwaff/be_tugbes/model"
 	"github.com/Fatwaff/be_tugbes/module"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var db = module.MongoConnect()
@@ -49,6 +50,54 @@ func TestInsertOneDoc(t *testing.T) {
 		fmt.Println("Data berhasil disimpan dengan id :", insertedID.Hex())
 		}
 	}
+}
+
+func TestUpdateOneDoc(t *testing.T) {
+ 	var docs model.User
+	id := "649063d3ad72e074286c61e8"
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	docs.FirstName = "Aufah"
+	docs.LastName = "Auliana"
+	docs.Email = "aufa@gmail.com"
+	docs.Password = "123456"
+	if docs.FirstName == "" || docs.LastName == "" || docs.Email == "" || docs.Password == "" {
+		t.Errorf("mohon untuk melengkapi data")
+		} else {
+			err := module.UpdateOneDoc(db, "user", objectId, docs)
+			if err != nil {
+			t.Errorf("Error inserting document: %v", err)
+			fmt.Println("Data tidak berhasil diupdate")
+		} else {
+		fmt.Println("Data berhasil diupdate")
+		}
+	}
+}
+
+func TestGetDocFromID(t *testing.T){
+	var data model.User
+	id := "6451d9503750124257ad6237"
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil{
+		t.Fatalf("error converting id to objectID: %v", err)
+	}
+	doc, err := module.GetDocFromID(objectId, db, "user", data)
+	if err != nil {
+		t.Fatalf("error calling GetDocFromID: %v", err)
+	}
+	fmt.Println(doc)
+}
+
+func TestGetDocFromID2(t *testing.T){
+	id := "6451d9503750124257ad6237"
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil{
+		t.Fatalf("error converting id to objectID: %v", err)
+	}
+	doc, err := module.GetDocFromID2(objectId, db, "user")
+	if err != nil {
+		t.Fatalf("error calling GetDocFromID: %v", err)
+	}
+	fmt.Println(doc)
 }
 
 // func TestSignUp(t *testing.T) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -40,6 +41,32 @@ func GetUserFromEmail(email string, db *mongo.Database, col string) (result mode
 	return result, nil
 }
 
+func GetDocFromID(_id primitive.ObjectID, db *mongo.Database, col string, doc interface{}) (interface{}, error) {
+	collection := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := collection.FindOne(context.TODO(), filter).Decode(&doc)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return doc, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return doc, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return doc, nil
+}
+
+func GetDocFromID2(_id primitive.ObjectID, db *mongo.Database, col string) (doc model.User, err error) {
+	collection := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err = collection.FindOne(context.TODO(), filter).Decode(&doc)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return doc, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return doc, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return doc, nil
+}
+
 func GetAllDocs(db *mongo.Database, col string, docs interface{}) interface{} {
 	collection := db.Collection(col)
 	filter := bson.M{}
@@ -62,6 +89,35 @@ func InsertOneDoc(db *mongo.Database, col string, doc interface{}) (insertedID p
 	}
 	insertedID = result.InsertedID.(primitive.ObjectID)
 	return insertedID, nil
+}
+
+func UpdateOneDoc(db *mongo.Database, col string, id primitive.ObjectID, doc interface{}) (err error) {
+	filter := bson.M{"_id": id}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, bson.M{"$set": doc})
+	if err != nil {
+		fmt.Printf("UpdatePresensi: %v\n", err)
+		return 
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No data has been changed with the specified ID")
+		return
+	}
+	return nil
+}
+
+func DeleteDocsByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	collection := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	result, err := collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("data with ID %s not found", _id)
+	}
+
+	return nil
 }
 
 // func EmailExists(db *mongo.Database, col string, email string) bool {
