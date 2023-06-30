@@ -12,7 +12,7 @@ import (
 var db = module.MongoConnect()
 
 func TestGetUserFromEmail(t *testing.T) {
-	email := "fatwaff@gmail.com"
+	email := "fg@gmail.com"
 	hasil, err := module.GetUserFromEmail(email, db, "user")
 	if err != nil {
 		t.Errorf("Error TestGetUserFromEmail: %v", err)
@@ -75,7 +75,7 @@ func TestUpdateOneDoc(t *testing.T) {
 
 func TestGetDocFromID(t *testing.T){
 	var data model.User
-	id := "6451d9503750124257ad6237"
+	id := "6451d9503750124257ad6239"
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil{
 		t.Fatalf("error converting id to objectID: %v", err)
