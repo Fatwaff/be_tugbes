@@ -84,7 +84,6 @@ func GetAllDocs(db *mongo.Database, col string, docs interface{}) interface{} {
 func InsertOneDoc(db *mongo.Database, col string, doc interface{}) (insertedID primitive.ObjectID, err error) {
 	result, err := db.Collection(col).InsertOne(context.Background(), doc)
 	if err != nil {
-		// fmt.Printf("InsertOneDoc: %v\n", err)
 		return insertedID, fmt.Errorf("kesalahan server")
 	}
 	insertedID = result.InsertedID.(primitive.ObjectID)
@@ -99,7 +98,7 @@ func UpdateOneDoc(db *mongo.Database, col string, id primitive.ObjectID, doc int
 		return 
 	}
 	if result.ModifiedCount == 0 {
-		err = errors.New("No data has been changed with the specified ID")
+		err = errors.New("no data has been changed with the specified id")
 		return
 	}
 	return nil
@@ -186,23 +185,3 @@ func LogIn(db *mongo.Database, col string, insertedDoc model.User) (email string
 	}
 	return existsDoc.Email, nil
 }
-
-// func SignUp(db *mongo.Database, col string, firstname string, lastname string, email string, password string) (insertedID primitive.ObjectID, err error) {
-// 	var doc model.User
-// 	collection := db.Collection(col)
-// 	filter := bson.M{"email": email}
-// 	err = collection.FindOne(context.TODO(), filter).Decode(&doc)
-// 	var er = fmt.Errorf("mongo: no documents in result")
-// 	if err != er && err != nil {
-// 		fmt.Printf("Gagal Sign Up : %v\n", err)
-// 		return
-// 	}
-// 	if doc.Email == email {
-// 		return insertedID, nil
-// 	}
-// 	doc.FirstName = firstname
-// 	doc.LastName = lastname
-// 	doc.Email = email
-// 	doc.Password = password
-// 	return InsertOneDoc(db, col, doc)
-// }

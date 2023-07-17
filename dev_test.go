@@ -12,7 +12,7 @@ import (
 var db = module.MongoConnect()
 
 func TestGetUserFromEmail(t *testing.T) {
-	email := "fg@gmail.com"
+	email := "admin@gmail.com"
 	hasil, err := module.GetUserFromEmail(email, db, "user")
 	if err != nil {
 		t.Errorf("Error TestGetUserFromEmail: %v", err)
