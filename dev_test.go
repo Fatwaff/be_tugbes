@@ -37,7 +37,7 @@ func TestInsertOneDoc(t *testing.T) {
  	var doc model.User
 	doc.FirstName = "Fatwa Fatahillah"
 	doc.LastName = "Fatah"
-	doc.Email = "fatwahh@gmail.com"
+	doc.Email = "lenovo@gmail.com"
 	doc.Password = "jklbnm"
 	if doc.FirstName == "" || doc.LastName == "" || doc.Email == "" || doc.Password == "" {
 		t.Errorf("mohon untuk melengkapi data")
