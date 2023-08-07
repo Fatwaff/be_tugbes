@@ -25,7 +25,7 @@ func MongoConnect() *mongo.Database {
 	if err != nil {
 		fmt.Printf("MongoConnect: %v\n", err)
 	}
-	return client.Database("db_bursa-kerja")
+	return client.Database("db_tugbes")
 }
 
 func GetUserFromEmail(email string, db *mongo.Database, col string) (result model.User, err error) {
